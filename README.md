@@ -11,8 +11,7 @@
 This package contains a [Reshuffle](https://github.com/reshufflehq/reshuffle)
 connector to connect [Airtable APIs](https://airtable.com/api).
 
-The following example exposes an endpoint to return the data of the first page of table 'Design projects', view 'All projects'. After running the example go to http://localhost:8000/projects 
-to view the results.
+The following example exposes an endpoint to return the first page of Airtable tab 'Design projects' with view 'All projects'. After running the example go to http://localhost:8000/projects to view the results.
 
 ```js
 const { HttpConnector, Reshuffle } = require('reshuffle')
@@ -61,7 +60,7 @@ app.start()
 
 #### Connector Actions
 
-[Base](#base) - Retrieve a full Airtable sdk object
+[Base](#base) - Retrieve a base Airtable object
 
 [SDK](#sdk) - Retrieve a full Airtable sdk object
 
@@ -89,14 +88,16 @@ More details about the APIs are described in [Airtable API documentation](https:
 #### <a name="listen"></a> Listening to Airtable events
 
 
-To listen to events happening in Airtable, you'll need to capture them with the connector's `on`
+In order to listen to events happening in Airtable, you'll need to capture them with the connector's `on`
 function, providing a `AirtableConnectorEventOptions` to it.
 
+Events should be configured for every Airtable table/tab, for example 
+in order to define all three events (added, modified, deleted) on two tables you have to define six events.
 
 ```typescript
 interface AirtableConnectorEventOptions {
   type: AirtableEventType // See bellow 
-  table: string // Airtable table/tab name
+  table: string           // Airtable table/tab name
 }
 
 // Where...
@@ -105,8 +106,6 @@ type AirtableEventType =
   | 'RecordModified'
   | 'RecordDeleted'
 ```
-Events should be configured for every Airtable table/tab, for example, 
-in order to define all three events on two tables you have to define six events.
 
 
 _Example:_
@@ -126,7 +125,7 @@ airtableConnector.on({ type: 'RecordModified', table: 'Design projects' }, async
 #### <a name="base"></a> base
 
 Returns a base object providing an access to the Airtable APIs.
-Usually you will use base in order to execute all the Airtable APIs.
+Usually you will use `base` in order to execute all the Airtable APIs.
 
 ```typescript
 const base = airtableConnector.base()
@@ -155,7 +154,7 @@ base('Design projects').select({
 
 #### <a name="sdk"></a> sdk
 
-Usually you will use the base() in order to access all the Airtable APIs but if you need the SDK it's you can get it by using this action.
+Usually `base` will be the main access to the Airtable APIs but if you need the SDK it is available by using this action.
 
 ```typescript
 const sdk = airtableConnector.sdk()
