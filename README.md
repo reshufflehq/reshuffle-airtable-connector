@@ -36,11 +36,7 @@ httpConnector.on({ method: 'GET', path: '/projects' }, async (event, app) => {
       event.res.json(err)
       return
     }
-    const projects = []
-    records.forEach(function(record) {
-        projects.push(record.get('Name'))
-    })
-    event.res.json(projects)
+    event.res.json(records.map(record => record.get('Name')))
   })
 })
 
@@ -143,11 +139,7 @@ base('Design projects').select({
       event.res.json(err)
       return
     }
-    const projects = []
-    records.forEach(function(record) {
-        projects.push(record.get('Name'))
-    })
-    event.res.json(projects)
+    event.res.json(records.map(record => record.get('Name')))
   })
 ```
 
@@ -172,11 +164,7 @@ base('Design projects').select({
       event.res.json(err)
       return
     }
-    const projects = []
-    records.forEach(function(record) {
-        projects.push(record.get('Name'))
-    })
-    event.res.json(projects)
+    event.res.json(records.map(record => record.get('Name')))
   })
 
 ```
