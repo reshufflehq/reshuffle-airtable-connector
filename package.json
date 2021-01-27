@@ -1,7 +1,7 @@
 {
-  "name": "reshuffle-connectorname-connector",
+  "name": "reshuffle-airtable-connector",
   "version": "0.0.1",
-  "description": "A Reshuffle _CONNECTOR_NAME_ connector",
+  "description": "A Reshuffle Airtable connector",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reshufflehq/reshuffle-_CONNECTOR_NAME_-connector.git"
+    "url": "git+https://github.com/reshufflehq/reshuffle-airtable-connector.git"
   },
   "keywords": [
     "Reshuffle",
@@ -23,10 +23,13 @@
   "author": "Reshuffle",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/reshufflehq/reshuffle-_CONNECTOR_NAME_-connector/issues"
+    "url": "https://github.com/reshufflehq/reshuffle-airtable-connector/issues"
   },
-  "homepage": "https://github.com/reshufflehq/reshuffle-_CONNECTOR_NAME_-connector#readme",
+  "homepage": "https://github.com/reshufflehq/reshuffle-airtable-connector#readme",
   "dependencies": {
+    "@types/object-hash": "^1.3.4",
+    "airtable": "^0.10.1",
+    "object-hash": "^2.1.1",
     "reshuffle-base-connector": "^0.0.11"
   },
   "devDependencies": {
