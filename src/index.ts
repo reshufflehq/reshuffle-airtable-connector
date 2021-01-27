@@ -210,7 +210,7 @@ export class AirtableConnector extends CoreConnector {
         }
       }
     }
-    console.log('add: ', addCount, ', update: ', modifiedCount, ', delete: ', delCount)
+
     return {
       changeCount: addCount + modifiedCount + delCount,
       additions,
