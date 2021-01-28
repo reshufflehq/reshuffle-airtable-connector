@@ -2,9 +2,6 @@ import { Reshuffle, EventConfiguration } from 'reshuffle-base-connector'
 import { CoreConnector, CoreEventHandler } from './CoreConnector'
 import Airtable from 'airtable'
 
-// every change of field is committed, the event can be triggered before the update is done
-// In order to get the tables names, need to access the metadata APIs - request for each connector
-
 const AIRTABLE_STORAGE_KEY = 'AIRTABLE_STORAGE_KEY'
 const AIRTABLE_STORAGE_KEY_HANDLE_MULTI_UPDATES = 'AIRTABLE_STORAGE_KEY_HANDLE_MULTI_UPDATES'
 const DEFAULT_ENDPOINT_URL = 'https://api.airtable.com'
@@ -27,13 +24,12 @@ type Tables = Record<TableName, TableRecord>
 
 export class AirtableConnector extends CoreConnector {
   private client: Airtable
-  _base: AirtableBase
+  private _base: AirtableBase
   private modificationsInStore = false
 
   constructor(app: Reshuffle, options: AirtableConnectorConfigOptions, id?: string) {
     super(app, options, id)
     this.configOptions.endpointUrl = options.endpointUrl || DEFAULT_ENDPOINT_URL
-    console.log('key:', options.apiKey)
     this.client = new Airtable({
       endpointUrl: options.endpointUrl || DEFAULT_ENDPOINT_URL,
       apiKey: options.apiKey,
@@ -47,19 +43,14 @@ export class AirtableConnector extends CoreConnector {
     handler: CoreEventHandler,
     eventId?: string,
   ): EventConfiguration {
-    if (
-      options.type !== 'RecordAdded' &&
-      options.type !== 'RecordModified' &&
-      options.type !== 'RecordDeleted'
-    ) {
+    if (!['RecordAdded', 'RecordModified', 'RecordDeleted'].includes(options.type)) {
       throw new Error(`Invalid event type: ${options.type}`)
     }
 
     if (!eventId) {
       eventId = `AIRTABLE/${options.type}/${options.table}/${this.id}`
     }
-    const eid = eventId
-    return this.eventManager.addEvent(options, handler, eid)
+    return this.eventManager.addEvent(options, handler, eventId)
   }
 
   protected async onInterval(): Promise<void> {
