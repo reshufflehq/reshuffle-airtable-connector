@@ -43,7 +43,7 @@ httpConnector.on({ method: 'GET', path: '/projects' }, async (event, app) => {
 app.start()
 ```
 
-[The official Airtable JavaScript library](https://github.com/Airtable/airtable.js)
+The official Airtable JavaScript library can be found [here]](https://github.com/Airtable/airtable.js)
 
 
 ### Table of Contents
@@ -85,9 +85,9 @@ More details about the APIs are described in [Airtable API documentation](https:
 
 
 In order to listen to events happening in Airtable, you'll need to capture them with the connector's `on`
-function, providing a `AirtableConnectorEventOptions` to it.
+function, providing an `AirtableConnectorEventOptions` to it.
 
-Events should be configured for every Airtable table/tab, for example 
+Events are specific to an Airtable table/tab, for example 
 in order to define all three events (added, modified, deleted) on two tables you have to define six events.
 
 ```typescript
@@ -108,7 +108,7 @@ _Example:_
 
 ```typescript
 airtableConnector.on({ type: 'RecordModified', table: 'Design projects' }, async (event, app) => {
-  console.log('RecordModified event')
+  console.log('RecordModified on Design projects table event')
   console.log(event.id)
   console.log(event.fields)
 })
