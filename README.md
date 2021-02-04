@@ -94,6 +94,7 @@ in order to define all three events (added, modified, deleted) on two tables you
 interface AirtableConnectorEventOptions {
   type: AirtableEventType // See bellow 
   table: string           // Airtable table/tab name
+  modifiedAfterFinishTyping?: boolean // How to manage `RecordModified` events for text fields, check the explanation below. The default value is true.
 }
 
 // Where...
@@ -102,6 +103,12 @@ type AirtableEventType =
   | 'RecordModified'
   | 'RecordDeleted'
 ```
+
+\* `'RecordAdded'` event on a Grid View will always end up having an empty record because of the Airtable nature.
+
+** `modifiedAfterFinishTyping` - For text fields Airtable persists the typed text while typing it, this can result in several `'RecordModified'` events for the one field change.
+When `modifiedAfterFinishTyping` is true (the default value) the connector will consider an event only when the user stops typing.
+When `modifiedAfterFinishTyping` is false there will be number of events, similar to the way that Airtable persisted the change.
 
 
 _Example:_
