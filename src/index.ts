@@ -54,8 +54,6 @@ export class AirtableConnector extends CoreConnector {
     if (typeof options.fireWhileTyping !== 'boolean') {
       options.fireWhileTyping = false
     }
-    console.log('options.fireWhileTyping: ', options.fireWhileTyping)
-    
     return this.eventManager.addEvent(options, handler, eventId)
   }
 
