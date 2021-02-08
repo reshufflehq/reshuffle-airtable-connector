@@ -94,7 +94,7 @@ in order to define all three events (added, modified, deleted) on two tables you
 interface AirtableConnectorEventOptions {
   type: AirtableEventType // See bellow 
   table: string           // Airtable table/tab name
-  modifiedAfterFinishTyping?: boolean // How to manage `RecordModified` events for text fields, check the explanation below. The default value is true.
+  fireWhileTyping?: boolean // How to manage `RecordModified` events for text fields, check the explanation below. The default value is false.
 }
 
 // Where...
@@ -104,11 +104,12 @@ type AirtableEventType =
   | 'RecordDeleted'
 ```
 
-\* `'RecordAdded'` event on a Grid View will always end up having an empty record because of the Airtable nature.
+\* `'RecordAdded'` - For a Grid View, when adding a new record there is no 'Create New' button that opens a dialog that enables populating and saving the record's fields. Instead Airtable stores the new record at the time you click the create the new record, at this stage all the record's fields are empty.
+Due to that, a `'RecordAdded'` event for a Grid View will end up having an empty record.  
 
-** `modifiedAfterFinishTyping` - For text fields Airtable persists the typed text while typing it, this can result in several `'RecordModified'` events for the one field change.
-When `modifiedAfterFinishTyping` is true (the default value) the connector will consider an event only when the user stops typing.
-When `modifiedAfterFinishTyping` is false there will be number of events, similar to the way that Airtable persisted the change.
+** `fireWhileTyping` -  Airtable persists every keystroke as the user is typing text. This may result in several 'RecordModified' events firing for a single field change.
+When `fireWhileTyping` is false (the default value) the connector will fire an event only when the user stops typing.
+When `fireWhileTyping` is true there will be number of events, similar to the way that Airtable persisted the change.
 
 
 _Example:_
