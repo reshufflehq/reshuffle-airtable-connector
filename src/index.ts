@@ -15,7 +15,7 @@ export interface AirtableConnectorConfigOptions {
 export interface AirtableConnectorEventOptions {
   type: AirtableEventType
   table: string
-  modifiedAfterFinishTyping?: boolean
+  fireWhileTyping?: boolean
 }
 
 export type AirtableBase = ReturnType<Airtable['base']>
@@ -51,10 +51,11 @@ export class AirtableConnector extends CoreConnector {
     if (!eventId) {
       eventId = `AIRTABLE/${options.type}/${options.table}/${this.id}`
     }
-    if (options.modifiedAfterFinishTyping == null) {
-      options.modifiedAfterFinishTyping = true
+    if (typeof options.fireWhileTyping !== 'boolean') {
+      options.fireWhileTyping = false
     }
-    console.log('options.modifiedAfterFinishTyping: ', options.modifiedAfterFinishTyping )
+    console.log('options.fireWhileTyping: ', options.fireWhileTyping)
+    
     return this.eventManager.addEvent(options, handler, eventId)
   }
 
@@ -80,7 +81,7 @@ export class AirtableConnector extends CoreConnector {
             (ec) =>
               ec.options.type === 'RecordModified' &&
               ec.options.table === table &&
-              ec.options.modifiedAfterFinishTyping,
+              !ec.options.fireWhileTyping,
             Object.values(updatedModifications[table]),
           )
         }
@@ -89,7 +90,7 @@ export class AirtableConnector extends CoreConnector {
             (ec) =>
               ec.options.type === 'RecordModified' &&
               ec.options.table === table &&
-              !ec.options.modifiedAfterFinishTyping,
+              ec.options.fireWhileTyping,
             Object.values(diff.modifications[table]),
           )
         }
